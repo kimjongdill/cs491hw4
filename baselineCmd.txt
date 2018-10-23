@@ -1,0 +1,1 @@
+for i in {1..1000001..10000}; do j=290001*2; ./benchmark_list_single_thread -i 290001 -r 290001*2 -u 0 | awk '/size/{size = } /find/{ops = } END{ print size t ops n}'; done > data.txt
