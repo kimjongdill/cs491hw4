@@ -54,3 +54,13 @@ for update in 90 50 10; do
     done | awk '/size/{size = $3} /ops/{ops = $2} END{ print size "\t" ops}' > outputData/bfl_rw_thread_${update}_core.txt
 done
 echo "...Done!"
+echo "Generating Hand over Hand Lock"
+threads=0
+for threads in 1 2 3 4; do
+    echo "For" $threads "threads"
+    for ((i=1; i<$MaxList; i+=10000)) ;do
+	j=$i*2
+	./benchmark_hhl -i $i -r $j -n $threads -d 3000
+    done | awk '/size/{size = $3} /ops/{ops = $2} END{ print size "\t" ops}' > outputData/bfl_hhl_thread_${threads}.txt
+done
+echo "...Done!"
