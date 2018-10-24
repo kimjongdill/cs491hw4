@@ -14,7 +14,7 @@ LDFLAGS += -lpthread -lnuma -DT$(NPROC)
 
 .PHONY: all clean
 
-BINS = benchmark_list_single_thread test_list_single_thread
+BINS = benchmark_list_single_thread test_list_single_thread benchmark_list_bfl test_list_bfl benchmark_bfl_spin test_bfl_spin benchmark_bfl_rw test_bfl_rw
 
 all: $(BINS)
 
@@ -28,7 +28,13 @@ list_single_thread.o: list_single_thread.c benchmark_list.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 list_bfl.o: list_bfl.c benchmark_list.h 
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -DMUTEX -c -o $@ $<
+
+list_bfl_spin.o: list_bfl.c benchmark_list.h
+	$(CC) $(CFLAGS) -DSPIN -c -o $@ $<
+
+list_bfl_rw.o: list_bfl.c benchmark_list.h
+	$(CC) $(CFLAGS) -DRW -c -o $@ $<
 
 benchmark_list_single_thread: benchmark_list.o list_single_thread.o 
 	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
@@ -36,10 +42,22 @@ benchmark_list_single_thread: benchmark_list.o list_single_thread.o
 benchmark_list_bfl: benchmark_list.o list_bfl.o 
 	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
 
+benchmark_bfl_spin: benchmark_list.o list_bfl_spin.o
+	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
+
+benchmark_bfl_rw: benchmark_list.o list_bfl_rw.o
+	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
+
 test_list_single_thread: test_list.o list_single_thread.o 
 	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
 
 test_list_bfl: test_list.o list_bfl.o 
+	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
+
+test_bfl_spin: test_list.o list_bfl_spin.o
+	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
+
+test_bfl_rw: test_list.o list_bfl_rw.o
 	$(LD) $(LDLIB) -o $@ $^ $(LDFLAGS)
 
 tree_single_thread.o: tree_single_thread.c
