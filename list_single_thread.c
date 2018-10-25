@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <stdint.h>
-#include <numa.h>
+//#include <numa.h>
 
 #include "benchmark_list.h"
 
