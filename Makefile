@@ -10,7 +10,7 @@ NPROC=$(shell nproc)
 CFLAGS += -g -Wall -Winline $(LDLIB)
 CFLAGS += -O3 -DT$(NPROC)
 
-LDFLAGS += -lpthread -lnuma -DT$(NPROC)
+LDFLAGS += -lpthread -DT$(NPROC)
 
 .PHONY: all clean
 

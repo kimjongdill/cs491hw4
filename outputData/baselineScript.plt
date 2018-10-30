@@ -7,7 +7,7 @@ set logscale xy
 plot "benchmark_single_thread_core_1.txt" using ($1):($2/3) title "Single Thread" with line,\
  "benchmark_single_thread_core_2.txt" using ($1):($2/3) title "Multi Thread 2" with line,\
  "benchmark_single_thread_core_4.txt" using ($1):($2/3) title "Multi Thread 4" with line, \
- "benchmark_single_thread_core_4.txt" using ($1):($2/3) title "Multi Thread 4" with line
+ "benchmark_single_thread_core_16.txt" using ($1):($2/3) title "Multi Thread 16" with line
 
 set output "bfl_mutex.pdf"
 set xlabel "List Size"
