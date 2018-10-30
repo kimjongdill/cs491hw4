@@ -6,6 +6,7 @@ set logscale xy
 
 plot "benchmark_single_thread_core_1.txt" using ($1):($2/3) title "Single Thread" with line,\
  "benchmark_single_thread_core_2.txt" using ($1):($2/3) title "Multi Thread 2" with line,\
+ "benchmark_single_thread_core_4.txt" using ($1):($2/3) title "Multi Thread 4" with line, \
  "benchmark_single_thread_core_4.txt" using ($1):($2/3) title "Multi Thread 4" with line
 
 set output "bfl_mutex.pdf"
@@ -15,8 +16,9 @@ set logscale xy
 
 plot "bfl_mutex_thread_1.txt" using ($1):($2/3) title "Single Thread" with line,\
  "bfl_mutex_thread_2.txt" using ($1):($2/3) title "Multi Thread 2" with line,\
- "bfl_mutex_thread_4.txt" using ($1):($2/3) title "Multi Thread 4" with line
-
+ "bfl_mutex_thread_4.txt" using ($1):($2/3) title "Multi Thread 4" with line,\
+ "bfl_mutex_thread_16.txt" using ($1):($2/3) title "Multi Thread 16" with line
+ 
 set output "bfl_spin_v_mutex.pdf"
 set xlabel "List Size"
 set ylabel "Number of Ops"
@@ -47,3 +49,4 @@ plot "bfl_hhl_thread_1.txt" using ($1):($2/3) title "1 Thread" with line,\
  "bfl_hhl_thread_2.txt" using ($1):($2/3) title "2 Threads" with line,\
  "bfl_hhl_thread_3.txt" using ($1):($2/3) title "3 Threads" with line,\
  "bfl_hhl_thread_4.txt" using ($1):($2/3) title "4 Threads" with line,\
+ "bfl_hhl_thread_16.txt" using ($1):($2/3) title "16 Threads" with line,\

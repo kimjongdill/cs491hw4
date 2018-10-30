@@ -20,21 +20,22 @@ linked list. The implementation types considered were:
 		\item A single spin lock per linked list node with a hand-over-hand locking strategy. 
 	\end{itemize}
 The single mutex lock is empirically the best option of the lock implementations tested 
-for large lists. For small lists the single threaded versions performed better than all 
+for large lists and a small number of users. For small lists the single threaded versions 
+performed better than all 
 the lock strategies due to the overhead of the atomic operations required to obtain and 
 release a lock. The readers writer lock provided a performance boost over the mutex lock 
 in small lists because it allows concurrency of reads. The spin lock proved to be a poor 
 solution when operating multiple threads on a single core because it puts lock holding 
 threads to sleep to allow other threads to spin and wait for the sleeping thread. The 
-hand over hand implementation has high overhead in atomic operations to change locks as 
-well as using more memory. 
+hand over hand implementation has high overhead in atomic operations to change locks but 
+overcomes the bottleneck of the BFL for very large lists and a greater number of threads. 
 \newline
 \newline
 Conclusion: To improve performance over a single entry lock to the linked list data 
 structure consider devising an implementation that does not rely on locks.  
 \newline
 \newline
-For each performance metric the list was grown exponentially at a rate of 10 nodes for 
+For each performance metric the list was grown exponentially at a rate of 10 for 
 values between 1 and 1,000,001 nodes. The benchmark program was run for 3 seconds and the 
 total number of operations recorded. The number of operations is divided by 3 to give an 
 average count of operations per second.
@@ -121,13 +122,12 @@ writes.
 		\label{f:Fig.5}
 		\caption{Spinlock on individual linked list nodes ops/sec logscale}
 	\end{figure}
-Observations from \ref{f:Fig.5} show that the Hand over Hand lock does not perform any 
-better on large lists than the big Mutex lock in \ref{f:Fig.2}. For small lists the 
-results are erratic, but this could be expected as the threads are more likely to conflict 
-on smaller lists. As the lists become larger the 3 and 4 thread instances outperform the 
-1 and 2 thread instances by a factor of 2. Empirically the big lock seems to perform 
-better than the tiny locks. This is likely due to the overhead of performing the atomic 
-lock and unlock operations for each step in the linked list. 
+Observations from \ref{f:Fig.5} show that for a large number of threads, the Hand over 
+Hand lock does performs better on large lists than the big Mutex lock in \ref{f:Fig.2}. 
+This is because the HHL method allows multiple threads to work on the list at the same 
+time, as long as the read or insert occurs earlier in the list than the latest lock. 
+This allows for some concurrency vs the bfl implementation which bottlenecks the threads 
+at the front of the list. 
 
 
 \end{document}
